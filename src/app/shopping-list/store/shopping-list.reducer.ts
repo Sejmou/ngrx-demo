@@ -28,4 +28,7 @@ export function shoppingListReducer(state = initialState, action: ShoppingListAc
         ]
       };
   }
+
+  //fallback, should only be reached on store init in practice
+  return state;
 }
