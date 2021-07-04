@@ -9,5 +9,5 @@ export class AddIngredient implements Action {
     readonly type = ADD_INGREDIENT;
 
     //the payload is simply the ingredient to add
-    payload: Ingredient;
+    constructor(public payload: Ingredient) {};
 }
