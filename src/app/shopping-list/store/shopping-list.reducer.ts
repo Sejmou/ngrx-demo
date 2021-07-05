@@ -12,7 +12,7 @@ const initialState = {
 };
 
 //func will be called w/ init state only on first call to reducer
-export function shoppingListReducer(state = initialState, action: ShoppingListActions.AddIngredient) {
+export function shoppingListReducer(state = initialState, action: ShoppingListActions.ShoppingListActions) {
   switch (action.type) {
     //why the switch statement, if we only accept AddIngredient action?!?!?!?!
     case ShoppingListActions.ADD_INGREDIENT:
@@ -26,6 +26,34 @@ export function shoppingListReducer(state = initialState, action: ShoppingListAc
           //add new ingredient stored in payload
           action.payload
         ]
+      };
+
+    case ShoppingListActions.ADD_INGREDIENTS:
+      return {
+        ...state,
+        ingredients: [
+          ...state.ingredients,
+          ...action.payload
+        ]
+      };
+
+    case ShoppingListActions.UPDATE_INGREDIENT:
+      const ingredient = state.ingredients[action.payload.index];
+      const updateIngredient = {
+        ...ingredient, // copy old data
+        ...action.payload.ingredient // overwrite with new data
+      };
+      const updatedIngredients = [...state.ingredients]; // copy array of ingredients
+      updatedIngredients[action.payload.index] = updateIngredient; //replace updated ingredient
+      return {
+        ...state,
+        ingredients: updatedIngredients
+      };
+
+    case ShoppingListActions.DELETE_INGREDIENT:
+      return {
+        ...state,
+        ingredients: state.ingredients.filter((ig, i) => i !== action.payload)
       };
   }
 
