@@ -6,6 +6,9 @@ import { ShoppingListService } from './shopping-list.service';
 import { LoggingService } from '../logging.service';
 import { Store } from '@ngrx/store';
 
+import * as fromShoppingList from '../shopping-list/store/shopping-list.reducer';
+import * as ShoppingListActions from '../shopping-list/store/shopping-list.actions';
+
 @Component({
   selector: 'app-shopping-list',
   templateUrl: './shopping-list.component.html',
@@ -20,7 +23,7 @@ export class ShoppingListComponent implements OnInit {
   constructor(
     private slService: ShoppingListService,
     private loggingService: LoggingService,
-    private store: Store<{ shoppingList: { ingredients: Ingredient[] } }>
+    private store: Store<fromShoppingList.AppState>
   ) { }
 
   ngOnInit() {
@@ -39,7 +42,8 @@ export class ShoppingListComponent implements OnInit {
   }
 
   onEditItem(index: number) {
-    this.slService.startedEditing.next(index);
+    // this.slService.startedEditing.next(index);
+    this.store.dispatch(new ShoppingListActions.StartEdit(index));
   }
 
   // we get rid of that too, Angular/ngRx unsubscribe from store's select() automatically :)
