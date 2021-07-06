@@ -28,24 +28,10 @@ export class ShoppingListComponent implements OnInit {
     //store's selector gives us an observable for the part of the store we are interested in
     this.ingredients = this.store.select('shoppingList');
 
-    // we can get rid of those lines of code:
-    // this.ingredients = this.slService.getIngredients();
-    // this.subscription = this.slService.ingredientsChanged.subscribe(
-    //   (ingredients: Ingredient[]) => {
-    //     this.ingredients = ingredients;
-    //   }
-    // );
-
     this.loggingService.printLog('Hello from ShoppingListComponent ngOnInit!');
   }
 
   onEditItem(index: number) {
-    // this.slService.startedEditing.next(index);
     this.store.dispatch(new ShoppingListActions.StartEdit(index));
   }
-
-  // we get rid of that too, Angular/ngRx unsubscribe from store's select() automatically :)
-  // ngOnDestroy() {
-  //   this.subscription.unsubscribe();
-  // }
 }

@@ -29,7 +29,6 @@ export class RecipeService {
   }
 
   addIngredientsToShoppingList(ingredients: Ingredient[]) {
-    // this.slService.addIngredients(ingredients); // replaced!
     this.store.dispatch(new ShoppingListActions.AddIngredients(ingredients));
   }
 
