@@ -1,11 +1,11 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 
 import { Ingredient } from '../shared/ingredient.model';
 import { LoggingService } from '../logging.service';
 import { Store } from '@ngrx/store';
 
-import * as fromShoppingList from '../shopping-list/store/shopping-list.reducer';
+import * as fromApp from '../store/app.reducer';
 import * as ShoppingListActions from '../shopping-list/store/shopping-list.actions';
 
 @Component({
@@ -21,7 +21,7 @@ export class ShoppingListComponent implements OnInit {
 
   constructor(
     private loggingService: LoggingService,
-    private store: Store<fromShoppingList.AppState>
+    private store: Store<fromApp.AppState>
   ) { }
 
   ngOnInit() {
