@@ -11,6 +11,9 @@ const initialState = {
 }
 
 export function authReducer(state = initialState, action: AuthActions.AuthActions) {
+    // console.log(state);// comment this out to see that the authReducer is essentially called on EVERY action that is dispatched on the store
+    //an implication of the fact that every reducer is called if some arbitrary action is dispatched on the store is that actions have to be unique across the whole app!
+    // dispatching an action with a non-unique name would trigger many reducers simultaneously (one for each duplication of the action's name) 
     switch (action.type) {
         case AuthActions.LOGIN:
             const user = new User(
@@ -30,5 +33,5 @@ export function authReducer(state = initialState, action: AuthActions.AuthAction
             }
     }
 
-    return state;
+    return state;//note that this is reached as 
 }
