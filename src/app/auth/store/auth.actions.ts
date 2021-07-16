@@ -1,6 +1,8 @@
 import { Action } from "@ngrx/store";
 
-export const LOGIN = '[Auth] Login';
+export const LOGIN_START = '[Auth] Login Start';
+export const LOGIN = '[Auth] Login';// could be rename to something like LOGIN_SUCCESS, but we're lazy
+export const LOGIN_FAIL = '[Auth] Login Fail';
 export const LOGOUT = '[Auth] Logout';
 
 export class Login implements Action {
@@ -11,11 +13,27 @@ export class Login implements Action {
         userId: string,
         token: string,
         expirationDate: Date
-    }) {}
+    }) { }
 }
 
 export class Logout implements Action {
     readonly type = LOGOUT;
 }
 
-export type AuthActions = Login | Logout;
+export class LoginStart implements Action {
+    readonly type = LOGIN_START;
+
+    constructor(public payload: { email: string, password: string }) { }
+}
+
+export class LoginFail implements Action {
+    readonly type = LOGIN_FAIL;
+
+    /**
+     * 
+     * @param payload error information
+     */
+    constructor(public payload: string) {}
+}
+
+export type AuthActions = Login | LoginStart | LoginFail | Logout;
