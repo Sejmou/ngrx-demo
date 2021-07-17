@@ -27,16 +27,17 @@ export class AuthComponent implements OnInit, OnDestroy {
   @ViewChild(PlaceholderDirective) alertHost: PlaceholderDirective;
 
   private closeSub: Subscription;
+  private storeSub: Subscription;
 
   constructor(
     private authService: AuthService,
     private router: Router,
     private componentFactoryResolver: ComponentFactoryResolver,
     private store: Store<fromApp.AppState>
-  ) {}
+  ) { }
 
   ngOnInit(): void {
-    this.store.select('auth').subscribe(authState => {
+    this.storeSub = this.store.select('auth').subscribe(authState => {
       // note: loading state is now also managed in reducer
       this.isLoading = authState.loading;
       this.error = authState.authError;
@@ -55,46 +56,27 @@ export class AuthComponent implements OnInit, OnDestroy {
     const email = form.value.email;
     const password = form.value.password;
 
-    let authObs: Observable<AuthResponseData>;
-
-    this.isLoading = true;
-
     if (this.isLoginMode) {
-      // authObs = this.authService.login(email, password); // old way before ngrx effects
-      this.store.dispatch(new AuthActions.LoginStart({
-        email,
-        password
-      }));
+      this.store.dispatch(new AuthActions.LoginStart({ email, password }));
     } else {
-      authObs = this.authService.signup(email, password);
+      this.store.dispatch(new AuthActions.SignupStart({ email, password }));
     }
-
-    // note: now we subscribe to auth slice of state in ngOnInit instead!
-    // authObs.subscribe(
-    //   resData => {
-    //     console.log(resData);
-    //     this.isLoading = false;
-    //     this.router.navigate(['/recipes']);
-    //   },
-    //   errorMessage => {
-    //     console.log(errorMessage);
-    //     this.error = errorMessage;
-    //     this.showErrorAlert(errorMessage);
-    //     this.isLoading = false;
-    //   }
-    // );
 
     form.reset();
   }
 
-  onHandleError() {
-    this.error = null;
-  }
+  // not good, state would be duplicated, should be managed in store too!
+  // we should create a clearError Action or something like that in this case
+  // won't do it as this method isn't called at all anyway
+  // onHandleError() {
+  //   this.error = null;
+  // }
 
   ngOnDestroy() {
     if (this.closeSub) {
       this.closeSub.unsubscribe();
     }
+    if (this.storeSub) this.storeSub.unsubscribe();
   }
 
   private showErrorAlert(message: string) {

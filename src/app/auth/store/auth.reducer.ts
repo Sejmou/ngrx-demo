@@ -19,7 +19,7 @@ export function authReducer(state = initialState, action: AuthActions.AuthAction
     //an implication of the fact that every reducer is called if some arbitrary action is dispatched on the store is that actions have to be unique across the whole app!
     // dispatching an action with a non-unique name would trigger many reducers simultaneously (one for each duplication of the action's name) 
     switch (action.type) {
-        case AuthActions.LOGIN:
+        case AuthActions.AUTHENTICATE_SUCCESS:
             const user = new User(
                 action.payload.email,
                 action.payload.userId,
@@ -38,12 +38,13 @@ export function authReducer(state = initialState, action: AuthActions.AuthAction
                 user: null
             }
         case AuthActions.LOGIN_START:
+        case AuthActions.SIGNUP_START:
             return {
                 ...state,
                 authError: null,
                 loading: true
             }
-        case AuthActions.LOGIN_FAIL:
+        case AuthActions.AUTHENTICATE_FAIL:
             return {
                 ...state,
                 user: null,
