@@ -12,6 +12,7 @@ import { SharedModule } from './shared/shared.module';
 import { CoreModule } from './core.module';
 import * as fromApp from './store/app.reducer';
 import { AuthEffects } from './auth/store/auth.effects';
+import { RecipeEffects } from './recipes/store/recipe.effects';
 
 @NgModule({
   declarations: [AppComponent, HeaderComponent],
@@ -23,7 +24,7 @@ import { AuthEffects } from './auth/store/auth.effects';
     //register reducers: tell ngRx which reducers to use for what parts/properties of our application state
     StoreModule.forRoot(fromApp.appReducer),
     // pass root effects (effects classes of our app), ngrx/effects sets everything up automatically then
-    EffectsModule.forRoot([AuthEffects]),
+    EffectsModule.forRoot([AuthEffects, RecipeEffects]),
 
     SharedModule,
     CoreModule
